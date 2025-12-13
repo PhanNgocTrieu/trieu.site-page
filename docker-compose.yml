@@ -1,0 +1,40 @@
+services:
+  web:
+    build: .
+    container_name: flask_saas_web
+    command: >
+      sh -c "flask db upgrade &&
+             gunicorn -w 4 -b 0.0.0.0:5000 wsgi:app"
+    volumes:
+      - .:/app
+    ports:
+      - "5001:5000"
+    environment:
+      - FLASK_APP=wsgi.py
+      - FLASK_CONFIG=development
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/flask_saas
+      - SECRET_KEY=dev-secret-key
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: postgres:15-alpine
+    container_name: flask_saas_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=flask_saas
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+  redis:
+    image: redis:7-alpine
+    container_name: flask_saas_redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres_data:
