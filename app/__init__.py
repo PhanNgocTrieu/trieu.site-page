@@ -32,11 +32,13 @@ def create_app(config_name='default'):
     from app.blueprints.errors import bp as errors_bp
     app.register_blueprint(errors_bp)
 
+    from app.blueprints.main import bp as main_bp
+    app.register_blueprint(main_bp)
+
+    from app.blueprints.docs import bp as docs_bp
+    app.register_blueprint(docs_bp, url_prefix='/docs')
+
     from flask import render_template
-    
-    @app.route('/')
-    def index():
-        return render_template('index.html')
         
     configure_logging(app)
     

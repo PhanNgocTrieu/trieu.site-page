@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center py-6">
+        <h1 class="text-3xl font-bold text-gray-900">Documents Library</h1>
+        {% if current_user.is_authenticated %}
+        <a href="{{ url_for('docs.upload') }}"
+            class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+            Upload Document
+        </a>
+        {% endif %}
+    </div>
+
+    <div class="bg-white shadow overflow-hidden sm:rounded-md">
+        <ul role="list" class="divide-y divide-gray-200">
+            {% for doc in documents %}
+            <li>
+                <div class="px-4 py-4 sm:px-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div
+                                class="flex-shrink-0 h-10 w-10 flex items-center justify-center bg-gray-100 rounded-lg text-2xl">
+                                {% if doc.file_type in ['pdf'] %}📕{% elif doc.file_type in ['doc', 'docx'] %}📘{% else
+                                %}📄{% endif %}
+                            </div>
+                            <div class="ml-4 truncate">
+                                <p class="text-sm font-medium text-indigo-600 truncate">{{ doc.title }}</p>
+                                <p class="text-sm text-gray-500">
+                                    {{ doc.filename }} &bull; {{ (doc.file_size / 1024)|round(1) }} KB
+                                </p>
+                            </div>
+                        </div>
+                        <div class="ml-2 flex-shrink-0 flex">
+                            <a href="{{ url_for('docs.download', doc_id=doc.id) }}"
+                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 hover:bg-green-200">
+                                Download
+                            </a>
+                        </div>
+                    </div>
+                    <div class="mt-2 text-sm text-gray-500">
+                        <p>Uploaded by <span class="font-medium text-gray-900">{{ doc.uploader.username }}</span> on
+                            <time datetime="{{ doc.created_at }}">{{ doc.created_at.strftime('%Y-%m-%d') }}</time></p>
+                    </div>
+                </div>
+            </li>
+            {% else %}
+            <li class="px-4 py-12 text-center text-gray-500">No documents found.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
