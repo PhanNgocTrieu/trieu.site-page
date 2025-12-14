@@ -12,7 +12,7 @@ services:
     environment:
       - FLASK_APP=wsgi.py
       - FLASK_CONFIG=development
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/flask_saas
+      - DATABASE_URL=postgresql://neondb_owner:npg_eh3tK2PmidNA@ep-small-term-ahos6cxn-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
       - SECRET_KEY=dev-secret-key
     depends_on:
       - db

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="md:flex md:items-center md:justify-between">
+        <div class="flex-1 min-w-0">
+            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                Dashboard
+            </h2>
+        </div>
+    </div>
+
+    <div class="mt-8 bg-white overflow-hidden shadow rounded-lg divide-y divide-gray-200">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+                Welcome back, {{ current_user.username }}!
+            </h3>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                Here's what's happening with your account today.
+            </p>
+        </div>
+        <div class="px-4 py-5 sm:p-6">
+            <!-- Content placeholder -->
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                <!-- Card 1 -->
+                <div class="bg-indigo-50 overflow-hidden shadow rounded-lg">
+                    <div class="px-4 py-5 sm:p-6">
+                        <dt class="text-sm font-medium text-gray-500 truncate">
+                            Account Status
+                        </dt>
+                        <dd class="mt-1 text-3xl font-semibold text-gray-900">
+                            {% if current_user.is_active %}Active{% else %}Inactive{% endif %}
+                        </dd>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-indigo-50 overflow-hidden shadow rounded-lg">
+                    <div class="px-4 py-5 sm:p-6">
+                        <dt class="text-sm font-medium text-gray-500 truncate">
+                            Member Since
+                        </dt>
+                        <dd class="mt-1 text-xl font-semibold text-gray-900">
+                            {{ current_user.created_at.strftime('%Y-%m-%d') }}
+                        </dd>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-indigo-50 overflow-hidden shadow rounded-lg">
+                    <div class="px-4 py-5 sm:p-6">
+                        <dt class="text-sm font-medium text-gray-500 truncate">
+                            Role
+                        </dt>
+                        <dd class="mt-1 text-xl font-semibold text-gray-900">
+                            {{ current_user.role|capitalize }}
+                        </dd>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
