@@ -7,6 +7,9 @@ class Config:
         'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
+    # Environment
+    APP_ENV = os.environ.get('APP_ENV', 'dev')
+    
     # Mail Settings
     MAIL_SERVER = os.environ.get('MAIL_SERVER')
     MAIL_PORT = int(os.environ.get('MAIL_PORT') or 25)
@@ -22,9 +25,16 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    # More verbose logging in dev
+    LOG_LEVEL = 'DEBUG'
 
 class ProductionConfig(Config):
     DEBUG = False
+    # Less verbose logging in prod
+    LOG_LEVEL = 'INFO'
+    # Stricter session settings
+    SESSION_COOKIE_SECURE = True
+    SESSION_COOKIE_HTTPONLY = True
 
 class TestingConfig(Config):
     TESTING = True

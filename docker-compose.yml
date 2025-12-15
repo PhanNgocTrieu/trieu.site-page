@@ -2,9 +2,7 @@ services:
   web:
     build: .
     container_name: flask_saas_web
-    command: >
-      sh -c "flask db upgrade &&
-             gunicorn -w 4 -b 0.0.0.0:5000 wsgi:app"
+    entrypoint: [ "/bin/bash", "/app/entrypoint.sh" ]
     volumes:
       - .:/app
     ports:
@@ -12,11 +10,18 @@ services:
     environment:
       - FLASK_APP=wsgi.py
       - FLASK_CONFIG=development
+      - APP_ENV=dev
       - DATABASE_URL=postgresql://neondb_owner:npg_eh3tK2PmidNA@ep-small-term-ahos6cxn-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+      - DB_HOST=ep-small-term-ahos6cxn-pooler.c-3.us-east-1.aws.neon.tech
+      - DB_USER=neondb_owner
+      - DB_NAME=neondb
+      - POSTGRES_PASSWORD=npg_eh3tK2PmidNA
       - SECRET_KEY=dev-secret-key
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
   db:
     image: postgres:15-alpine
@@ -29,6 +34,11 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5433:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:7-alpine

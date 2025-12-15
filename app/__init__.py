@@ -48,26 +48,10 @@ def create_app(config_name='default'):
         
     configure_logging(app)
     
-    # Create default admin inside app context
-    with app.app_context():
-        create_default_admin(app)
+    # Admin creation moved to init_admin.py (called from entrypoint.sh)
+    # This prevents race conditions during container startup
         
     return app
-
-def create_default_admin(app):
-    from app.models.user import User
-    from app.extensions import db
-    
-    try:
-        if not User.query.filter_by(username='admin').first():
-            admin = User(username='admin', email='admin@example.com', role='admin')
-            admin.set_password('admin12345')
-            db.session.add(admin)
-            db.session.commit()
-            app.logger.info("Created default admin account: admin/admin12345")
-    except Exception as e:
-        app.logger.error(f"Failed to create default admin: {e}")
-        db.session.rollback()
 
 def configure_logging(app):
     import logging
