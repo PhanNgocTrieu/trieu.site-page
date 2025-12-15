@@ -44,12 +44,12 @@
                             Docs
                         </a>
                         <a href="{{ url_for('bible.index') }}"
-                            class="{{ active_class if 'bible.' in request.endpoint else inactive_class }} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            class="{{ active_class if request.endpoint and 'bible.' in request.endpoint else inactive_class }} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             Bible
                         </a>
                         {% if current_user.is_authenticated and current_user.role == 'admin' %}
                         <a href="{{ url_for('admin.index') }}"
-                            class="{{ active_class if 'admin.' in request.endpoint else inactive_class }} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            class="{{ active_class if request.endpoint and 'admin.' in request.endpoint else inactive_class }} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             Admin
                         </a>
                         {% endif %}
