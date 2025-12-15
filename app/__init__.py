@@ -26,6 +26,9 @@ def create_app(config_name='default'):
     from app.blueprints.blog import bp as blog_bp
     app.register_blueprint(blog_bp, url_prefix='/blog')
 
+    from app.blueprints.api import bp as api_bp
+    app.register_blueprint(api_bp)
+
     from app.blueprints.admin import bp as admin_bp
     app.register_blueprint(admin_bp, url_prefix='/admin')
 

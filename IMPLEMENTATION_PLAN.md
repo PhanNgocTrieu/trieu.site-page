@@ -6,7 +6,7 @@ tài liệu này chi tiết hóa kế hoạch nâng cấp website `trieu.site-pa
 
 ## 1. Tổng quan & Mục tiêu
 
-*   **Mục tiêu cốt lõi**: Xây dựng Nền tảng Chia sẻ Thông tin & Tôn giáo hiện đại.
+*   **Mục tiêu cốt lõi**: Xây dựng Nền tảng Chia sẻ Thông tin & Tôn giáo hiện đại (Spiritual Feed).
 *   **Điểm nhấn mới**:
     *   **AI-Powered Content**: Sử dụng OpenAI để tự động format bài viết, tạo bố cục đẹp mắt thay vì văn bản thô sơ.
     *   **Docs Repository**: Kho tệp tin/tài liệu cho cộng đồng.
@@ -38,22 +38,21 @@ tài liệu này chi tiết hóa kế hoạch nâng cấp website `trieu.site-pa
 
 **Status**: [x] Completed
 - Homepage chuyển đổi thành News Feed (Grid Layout).
+- Rebranding thành công ("Spiritual Feed").
 - Docs Library đã hoạt động (Upload/Download).
-- Navigation đã cập nhật link Docs.
 
 ---
 
 ### Giai đoạn 2: User Experience & Authentication
 **Mục tiêu**: Tăng trải nghiệm cá nhân hóa.
 
-*   **2.1. Login by Email**: Chuyển đổi sang đăng nhập bằng Email.
+*   **2.1. Login by Email**: Chuyển đổi sang đăng nhập bằng Email/Username.
 *   **2.2. User Profile**: Avatar upload, Bio, Danh sách bài đã đăng, Tài liệu đã đóng góp.
-*   **2.3. Rich Text Editor (Soạn thảo văn bản)**:
-    *   Tích hợp Editor mạnh mẽ hơn (như Quill.js hoặc Editor.js) để hỗ trợ chèn ảnh, video, quote dễ dàng.
-    *   *(Phần này sẽ tích hợp kỹ hơn khi làm AI ở Phase 3)*
+*   **2.3. Rich Text Editor**:
+    *   (Đã tích hợp trong Phase 3 cùng AI).
 
 **Status**: [x] Completed
-- Login đã chuyển sang Email.
+- Login linh hoạt (Email/Username).
 - Profile Page đã hỗ trợ Upload Avatar và Update thông tin.
 
 ---
@@ -63,16 +62,20 @@ tài liệu này chi tiết hóa kế hoạch nâng cấp website `trieu.site-pa
 
 *   **3.1. AI Layout Generator (OpenAI Integration)**
     *   **Vấn đề**: User thường viết bài không đẹp (ít xuống dòng, thiếu ảnh minh họa, heading lộn xộn).
-    *   **Giải pháp**: Tích hợp OpenAI API (GPT-4o/mini).
+    *   **Giải pháp**: Tích hợp OpenAI API.
     *   **Luồng hoạt động**:
         1. User viết nội dung thô (text, ý tưởng).
-        2. Bấm nút "Magic Format".
-        3. App gửi nội dung sang OpenAI kèm prompt về thiết kế (HTML/Markdown structure).
-        4. AI trả về bài viết đã được trình bày lại: Thêm Heading, Chia đoạn, Gợi ý vị trí chèn ảnh, Bôi đậm ý chính, Tạo Quote nổi bật.
+        2. Bấm nút "✨ AI Magic Format".
+        3. App gửi nội dung sang OpenAI kèm prompt về thiết kế.
+        4. AI trả về bài viết đã được trình bày lại (HTML).
 
-*   **3.2. Auto-Tagging & Summary**: AI tự động tạo Tóm tắt và gắn Tag cho bài viết.
+*   **3.2. Auto-Tagging & Summary**: (Optional) AI tự động tạo Tóm tắt và gắn Tag cho bài viết.
 
-**Status**: [ ] Not Started
+**Status**: [x] Completed (Core Integration)
+- Đã xây dựng `AIService` và API Endpoint `/api/ai/format-post`.
+- Đã thêm nút "AI Magic Format" vào trang viết bài.
+- Đang chạy chế độ **Mock Mode** (Giả lập) do chưa có API Key.
+- Cần cấu hình `OPENAI_API_KEY` trong `.env` để chạy thật.
 
 ---
 
@@ -92,10 +95,9 @@ tài liệu này chi tiết hóa kế hoạch nâng cấp website `trieu.site-pa
 *   **Backend**: Flask + SQLAlchemy.
 *   **AI**: OpenAI API (Cần API Key).
 *   **Frontend**: Tailwind CSS (Typography plugin), Alpine.js.
-*   **Storage**: Cân nhắc S3 (AWS/MinIO) hoặc Cloudinary nếu lượng file Docs lớn (Hiện tại dùng Local/Neon là tạm ổn cho start).
 
 ## 4. Lộ trình triển khai (Roadmap)
 1.  **Phase 1**: News Feed Homepage + Docs Library (Đã xong).
-2.  **Phase 2**: User Profile + Rich Editor (Đã xong Core).
-3.  **Phase 3**: Tích hợp OpenAI để làm đẹp bài viết.
+2.  **Phase 2**: User Profile (Đã xong).
+3.  **Phase 3**: Tích hợp OpenAI (Đã xong Core).
 4.  **Phase 4**: Bible App.
