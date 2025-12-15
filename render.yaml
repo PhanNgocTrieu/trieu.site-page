@@ -1,0 +1,33 @@
+# render.yaml
+# Render Blueprint - Auto-deploy configuration
+# Đặt file này ở root của repository để Render tự động nhận diện
+
+services:
+  - type: web
+    name: spiritual-feed
+    runtime: docker
+    region: singapore
+    plan: free
+    branch: master
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: FLASK_APP
+        value: wsgi.py
+      - key: FLASK_CONFIG
+        value: production
+      - key: APP_ENV
+        value: prod
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false  # Set manually in Render dashboard
+      - key: DB_HOST
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: POSTGRES_PASSWORD
+        sync: false
+    healthCheckPath: /
+    autoDeploy: true
