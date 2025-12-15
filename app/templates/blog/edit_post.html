@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-8">
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">{{ title }}</h2>
+        <form method="POST" action="" enctype="multipart/form-data" id="post-form">
+            {{ form.hidden_tag() }}
+
+            <div class="mb-4">
+                {{ form.title.label(class="block text-gray-700 text-sm font-bold mb-2") }}
+                {% if form.title.errors %}
+                {{ form.title(class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700
+                leading-tight focus:outline-none focus:shadow-outline") }}
+                <div class="text-red-500 text-xs italic">
+                    {% for error in form.title.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.title(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                focus:outline-none focus:shadow-outline") }}
+                {% endif %}
+            </div>
+
+            <div class="mb-4">
+                {{ form.summary.label(class="block text-gray-700 text-sm font-bold mb-2") }}
+                {{ form.summary(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700
+                leading-tight focus:outline-none focus:shadow-outline", rows="3") }}
+            </div>
+
+            <div class="mb-6">
+                {{ form.content.label(class="block text-gray-700 text-sm font-bold mb-2") }}
+
+                <!-- Quill Editor Container -->
+                <div id="editor-container" class="h-96 bg-white"></div>
+
+                <!-- Hidden TextArea to store content -->
+                {{ form.content(class="hidden", id="hidden-content") }}
+
+                {% if form.content.errors %}
+                <div class="text-red-500 text-xs italic mt-2">
+                    {% for error in form.content.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-4">
+                {{ form.cover_image.label(class="block text-gray-700 text-sm font-bold mb-2") }}
+                {{ form.cover_image(class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
+                file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700
+                hover:file:bg-indigo-100") }}
+                {% if form.cover_image.errors %}
+                <div class="text-red-500 text-xs italic">
+                    {% for error in form.cover_image.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="flex items-center justify-between">
+                {{ form.submit(class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded
+                focus:outline-none focus:shadow-outline cursor-pointer") }}
+                <a href="{{ url_for('blog.index') }}"
+                    class="inline-block align-baseline font-bold text-sm text-indigo-500 hover:text-indigo-800">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Include Quill Styles and Script -->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var quill = new Quill('#editor-container', {
+            theme: 'snow',
+            placeholder: 'Viết bài tại đây...',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    ['blockquote', 'code-block'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'script': 'sub' }, { 'script': 'super' }],
+                    [{ 'indent': '-1' }, { 'indent': '+1' }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'align': [] }],
+                    ['link', 'image', 'video'],
+                    ['clean']
+                ]
+            }
+        });
+
+        // Sync Content logic
+        var form = document.getElementById('post-form');
+        var hiddenContent = document.getElementById('hidden-content');
+
+        // Initial Load (Edit mode)
+        if (hiddenContent.value) {
+            quill.root.innerHTML = hiddenContent.value;
+        }
+
+        // Robust Sync Content logic
+        quill.on('text-change', function () {
+            hiddenContent.value = quill.root.innerHTML;
+        });
+
+        // Ensure sync on submit as backup
+        form.onsubmit = function () {
+            hiddenContent.value = quill.root.innerHTML;
+        };
+    });
+</script>
+{% endblock %}

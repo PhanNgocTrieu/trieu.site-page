@@ -56,3 +56,33 @@ def create_post():
         flash('Your post is now live!')
         return redirect(url_for('blog.index'))
     return render_template('blog/create_post.html', title='New Post', form=form)
+
+@bp.route('/<int:post_id>/update', methods=['GET', 'POST'])
+@login_required
+def update_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author != current_user and current_user.role != 'admin':
+        abort(403)
+    
+    form = PostForm()
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+        post.summary = form.summary.data
+        
+        if form.cover_image.data:
+            post.cover_image = save_picture(form.cover_image.data)
+            
+        # Optional: Update slug if title changes? better keep it stable for SEO or make it optional.
+        # For now, let's keep slug stable.
+        
+        db.session.commit()
+        flash('Your post has been updated!', 'success')
+        return redirect(url_for('blog.post', slug=post.slug))
+    
+    elif request.method == 'GET':
+        form.title.data = post.title
+        form.content.data = post.content
+        form.summary.data = post.summary
+        
+    return render_template('blog/edit_post.html', title='Update Post', form=form, legend='Update Post')

@@ -1,117 +1,124 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
-        <div>
-            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                Create a new Post
-            </h2>
-        </div>
-        <form class="mt-8 space-y-6" action="" method="post" enctype="multipart/form-data">
+<div class="max-w-4xl mx-auto py-8">
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">Create New Post</h2>
+        <form method="POST" action="" enctype="multipart/form-data" id="post-form">
             {{ form.hidden_tag() }}
-            <div class="rounded-md shadow-sm -space-y-px">
-                <div class="mb-4">
-                    {{ form.title.label(class="block text-sm font-medium text-gray-700") }}
-                    {{ form.title(class="appearance-none rounded-none relative block w-full px-3 py-2 border
-                    border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none
-                    focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm") }}
-                    {% for error in form.title.errors %}
-                    <span class="text-red-500 text-xs">{{ error }}</span>
-                    {% endfor %}
-                </div>
-                <div class="mb-4">
-                    {{ form.cover_image.label(class="block text-sm font-medium text-gray-700") }}
-                    {{ form.cover_image(class="appearance-none rounded-none relative block w-full px-3 py-2 border
-                    border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500
-                    focus:border-indigo-500 focus:z-10 sm:text-sm") }}
-                    {% for error in form.cover_image.errors %}
-                    <span class="text-red-500 text-xs">{{ error }}</span>
-                    {% endfor %}
-                </div>
-                <div class="mb-4">
-                    {{ form.summary.label(class="block text-sm font-medium text-gray-700") }}
-                    {{ form.summary(class="appearance-none rounded-none relative block w-full px-3 py-2 border
-                    border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500
-                    focus:border-indigo-500 focus:z-10 sm:text-sm", rows="3") }}
-                </div>
-                <div>
-                    <div class="flex justify-between items-center mb-1">
-                        {{ form.content.label(class="block text-sm font-medium text-gray-700") }}
-                        <button type="button" id="ai-magic-btn"
-                            class="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            <svg class="-ml-0.5 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
-                            </svg>
-                            ✨ AI Magic Format
-                        </button>
-                    </div>
-                    {{ form.content(class="appearance-none rounded-none relative block w-full px-3 py-2 border
-                    border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none
-                    focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", rows="10") }}
-                    {% for error in form.content.errors %}
-                    <span class="text-red-500 text-xs">{{ error }}</span>
-                    {% endfor %}
-                </div>
+
+            <div class="mb-4">
+                {{ form.title.label(class="block text-gray-700 text-sm font-bold mb-2") }}
+                {{ form.title(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                focus:outline-none focus:shadow-outline") }}
             </div>
 
-            <div>
-                {{ form.submit(class="group relative w-full flex justify-center py-2 px-4 border border-transparent
-                text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none
-                focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500") }}
+            <div class="mb-4">
+                {{ form.summary.label(class="block text-gray-700 text-sm font-bold mb-2") }}
+                {{ form.summary(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700
+                leading-tight focus:outline-none focus:shadow-outline", rows="3") }}
+            </div>
+
+            <div class="mb-6 relative">
+                <div class="flex justify-between items-center mb-2">
+                    {{ form.content.label(class="block text-gray-700 text-sm font-bold") }}
+
+                    <!-- AI Magic Button -->
+                    <button type="button" id="ai-magic-btn"
+                        class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-bold py-1 px-3 rounded text-sm shadow-md flex items-center transition transform hover:scale-105">
+                        <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                        ✨ AI Magic Format
+                    </button>
+                </div>
+
+                <!-- Quill Editor -->
+                <div id="editor-container" class="h-96 bg-white"></div>
+
+                {{ form.content(class="hidden", id="hidden-content") }}
+            </div>
+
+            <div class="mb-4">
+                {{ form.cover_image.label(class="block text-gray-700 text-sm font-bold mb-2") }}
+                {{ form.cover_image(class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
+                file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700
+                hover:file:bg-indigo-100") }}
+            </div>
+
+            <div class="flex items-center justify-between">
+                {{ form.submit(class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded
+                focus:outline-none focus:shadow-outline cursor-pointer") }}
             </div>
         </form>
     </div>
 </div>
-{% endblock %}
 
-{% block scripts %}
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
 <script>
-    document.getElementById('ai-magic-btn').addEventListener('click', async function () {
-        const contentField = document.getElementById('content'); // Ensure ID matches wtforms output
-        const rawContent = contentField.value;
-        const btn = this;
-        const originalText = btn.innerHTML;
-
-        if (!rawContent.trim()) {
-            alert('Please enter some content first!');
-            return;
-        }
-
-        // Set loading state
-        btn.disabled = true;
-        btn.innerHTML = '<svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Processing...';
-
-        try {
-            const response = await fetch('/api/ai/format-post', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    // Add CSRF token header if needed
-                    'X-CSRFToken': document.querySelector('input[name="csrf_token"]').value
-                },
-                body: JSON.stringify({ content: rawContent })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                contentField.value = data.formatted_content;
-                // Optional: Highlight success
-                btn.classList.add('bg-green-600');
-                setTimeout(() => btn.classList.remove('bg-green-600'), 2000);
-            } else {
-                alert('Error: ' + data.error);
+    document.addEventListener('DOMContentLoaded', function () {
+        var quill = new Quill('#editor-container', {
+            theme: 'snow',
+            placeholder: 'Write something amazing...',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    ['blockquote', 'code-block'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    ['link', 'image'],
+                    ['clean']
+                ]
             }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('An unexpected error occurred.');
-        } finally {
-            btn.disabled = false;
-            btn.innerHTML = originalText;
-        }
+        });
+
+        var form = document.getElementById('post-form');
+        var hiddenContent = document.getElementById('hidden-content');
+
+        // Robust Sync Content logic
+        quill.on('text-change', function () {
+            hiddenContent.value = quill.root.innerHTML;
+        });
+
+        // Ensure sync on submit as backup
+        form.onsubmit = function () {
+            hiddenContent.value = quill.root.innerHTML;
+        };
+
+        // AI Magic Logic
+        const aiBtn = document.getElementById('ai-magic-btn');
+        aiBtn.addEventListener('click', async () => {
+            const rawText = quill.getText(); // Get plain text from Quill
+            if (!rawText.trim()) return;
+
+            aiBtn.disabled = true;
+            aiBtn.innerHTML = `<svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Processing...`;
+
+            try {
+                const response = await fetch('/api/ai/format-post', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content: rawText })
+                });
+                const data = await response.json();
+
+                if (data.formatted_content) {
+                    // Update Quill content
+                    quill.clipboard.dangerouslyPasteHTML(data.formatted_content);
+                } else {
+                    alert('AI Error: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Connection error');
+            } finally {
+                aiBtn.disabled = false;
+                aiBtn.innerHTML = `<svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg> ✨ AI Magic Format`;
+            }
+        });
     });
 </script>
 {% endblock %}
