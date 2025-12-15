@@ -36,11 +36,11 @@
                             Home
                         </a>
                         <a href="{{ url_for('blog.index') }}"
-                            class="{{ active_class if 'blog.' in request.endpoint else inactive_class }} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            class="{{ active_class if request.endpoint and 'blog.' in request.endpoint else inactive_class }} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             Blog
                         </a>
                         <a href="{{ url_for('docs.index') }}"
-                            class="{{ active_class if 'docs.' in request.endpoint else inactive_class }} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            class="{{ active_class if request.endpoint and 'docs.' in request.endpoint else inactive_class }} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             Docs
                         </a>
                         <a href="{{ url_for('bible.index') }}"
