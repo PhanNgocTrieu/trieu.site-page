@@ -7,6 +7,5 @@ __pycache__
 *.pyo
 *.pyd
 .pytest_cache
-migrations/
 logs/
 app.db
