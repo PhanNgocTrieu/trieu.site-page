@@ -6,7 +6,7 @@
     <div class="text-center py-10 lg:py-16">
         <h1 class="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
             <span class="block">Shares & Faith</span>
-            <span class="block text-indigo-600">News Feed</span>
+            <span class="block text-indigo-600">Spiritual Feed</span>
         </h1>
         <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-500">
             Cập nhật tin tức, bài chia sẻ và thông tin mới nhất từ cộng đồng.
@@ -37,7 +37,7 @@
                         </span>
                         {% endfor %}
                     </div>
-                    <a href="{{ url_for('blog.post_detail', slug=post.slug) }}" class="block mt-2">
+                    <a href="{{ url_for('blog.post', slug=post.slug) }}" class="block mt-2">
                         <p class="text-xl font-semibold text-gray-900">
                             {{ post.title }}
                         </p>

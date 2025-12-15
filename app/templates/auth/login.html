@@ -25,6 +25,9 @@
                     {{ form.password(class="appearance-none rounded relative block w-full px-3 py-2 border
                     border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500
                     focus:border-indigo-500 focus:z-10 sm:text-sm") }}
+                    <a href="/" class="flex-shrink-0 flex items-center">
+                        <span class="font-bold text-xl text-indigo-600">Spiritual Feed</span>
+                    </a>
                     {% for error in form.password.errors %}
                     <p class="text-red-500 text-xs italic">{{ error }}</p>
                     {% endfor %}
