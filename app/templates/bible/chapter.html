@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <!-- Navigation Header -->
+    <div class="flex justify-between items-center mb-8">
+        <a href="{{ url_for('bible.index') }}" class="text-gray-500 hover:text-gray-900">
+            &larr; Mục lục
+        </a>
+        <h1 class="text-2xl font-bold text-gray-900">{{ book.name }} {{ chapter.number }}</h1>
+        <div class="flex space-x-2">
+            {% if prev_chapter %}
+            <a href="{{ url_for('bible.chapter', book_id=book.id, chapter_num=prev_chapter.number) }}"
+                class="px-3 py-1 bg-gray-100 rounded hover:bg-gray-200 text-gray-700">Trước</a>
+            {% else %}
+            <span class="px-3 py-1 bg-gray-50 text-gray-300 cursor-not-allowed rounded">Trước</span>
+            {% endif %}
+
+            {% if next_chapter %}
+            <a href="{{ url_for('bible.chapter', book_id=book.id, chapter_num=next_chapter.number) }}"
+                class="px-3 py-1 bg-gray-100 rounded hover:bg-gray-200 text-gray-700">Sau</a>
+            {% else %}
+            <span class="px-3 py-1 bg-gray-50 text-gray-300 cursor-not-allowed rounded">Sau</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Chapter Content -->
+    <div class="bg-white shadow rounded-lg p-6 lg:p-10 prose prose-lg max-w-none text-gray-800 leading-8">
+        {% for verse in chapter.verses %}
+        <span class="align-top text-xs text-indigo-500 font-bold mr-1 select-none">{{ verse.number }}</span>
+        <span class="hover:bg-yellow-50 transition cursor-text">{{ verse.content }}</span>
+        {% endfor %}
+    </div>
+
+    <!-- Navigation Footer -->
+    <div class="flex justify-between items-center mt-8">
+        {% if prev_chapter %}
+        <a href="{{ url_for('bible.chapter', book_id=book.id, chapter_num=prev_chapter.number) }}"
+            class="text-indigo-600 hover:text-indigo-800 font-medium">&larr; Chương {{ prev_chapter.number }}</a>
+        {% else %}
+        <div></div>
+        {% endif %}
+
+        {% if next_chapter %}
+        <a href="{{ url_for('bible.chapter', book_id=book.id, chapter_num=next_chapter.number) }}"
+            class="text-indigo-600 hover:text-indigo-800 font-medium">Chương {{ next_chapter.number }} &rarr;</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

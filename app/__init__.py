@@ -29,6 +29,9 @@ def create_app(config_name='default'):
     from app.blueprints.api import bp as api_bp
     app.register_blueprint(api_bp)
 
+    from app.blueprints.bible import bp as bible_bp
+    app.register_blueprint(bible_bp)
+
     from app.blueprints.admin import bp as admin_bp
     app.register_blueprint(admin_bp, url_prefix='/admin')
 
