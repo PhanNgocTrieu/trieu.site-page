@@ -18,16 +18,16 @@ services:
       - key: APP_ENV
         value: prod
       - key: SECRET_KEY
-        generateValue: true
+        value: 07007a6ecf7bc17f68428c76756b99721d8d7592d813d058b6e9d5a5c8ac1579
       - key: DATABASE_URL
-        sync: false  # Set manually in Render dashboard
+        value: postgresql://neondb_owner:npg_eh3tK2PmidNA@ep-small-term-ahos6cxn-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require
       - key: DB_HOST
-        sync: false
+        value: ep-small-term-ahos6cxn-pooler.c-3.us-east-1.aws.neon.tech
       - key: DB_USER
-        sync: false
+        value: neondb_owner
       - key: DB_NAME
-        sync: false
+        value: neondb
       - key: POSTGRES_PASSWORD
-        sync: false
+        value: npg_eh3tK2PmidNA
     healthCheckPath: /
     autoDeploy: true
