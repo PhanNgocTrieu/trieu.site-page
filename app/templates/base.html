@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% if title %}{{ title }} - Spiritual Feed{% else %}Spiritual Feed{% endif %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
 <body class="bg-gray-100 min-h-screen flex flex-col font-sans">
@@ -17,25 +19,29 @@
                         <span class="font-bold text-xl text-indigo-600">Spiritual Feed</span>
                     </a>
                     <div class="hidden md:ml-6 md:flex md:space-x-8">
+                        {% set active_class = "border-indigo-500 text-gray-900" %}
+                        {% set inactive_class = "border-transparent text-gray-500 hover:border-gray-300
+                        hover:text-gray-700" %}
+
                         <a href="{{ url_for('main.index') }}"
-                            class="text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 border-indigo-500 text-sm font-medium">
+                            class="{{ active_class if request.endpoint == 'main.index' else inactive_class }} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             Home
                         </a>
                         <a href="{{ url_for('blog.index') }}"
-                            class="text-gray-500 hover:text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium">
+                            class="{{ active_class if 'blog.' in request.endpoint else inactive_class }} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             Blog
                         </a>
                         <a href="{{ url_for('docs.index') }}"
-                            class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            class="{{ active_class if 'docs.' in request.endpoint else inactive_class }} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             Docs
                         </a>
                         <a href="{{ url_for('bible.index') }}"
-                            class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            class="{{ active_class if 'bible.' in request.endpoint else inactive_class }} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             Bible
                         </a>
                         {% if current_user.is_authenticated and current_user.role == 'admin' %}
                         <a href="{{ url_for('admin.index') }}"
-                            class="text-gray-500 hover:text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium">
+                            class="{{ active_class if 'admin.' in request.endpoint else inactive_class }} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             Admin
                         </a>
                         {% endif %}
@@ -44,9 +50,9 @@
                 <div class="flex items-center">
                     {% if current_user.is_authenticated %}
                     <a href="{{ url_for('user.dashboard') }}"
-                        class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
+                        class="{{ active_class if request.endpoint == 'user.dashboard' else 'text-gray-600 hover:text-gray-900' }} px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
                     <a href="{{ url_for('user.profile') }}"
-                        class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">{{
+                        class="{{ active_class if request.endpoint == 'user.profile' else 'text-gray-600 hover:text-gray-900' }} px-3 py-2 rounded-md text-sm font-medium">{{
                         current_user.username }}</a>
                     <a href="{{ url_for('auth.logout') }}"
                         class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Logout</a>
@@ -64,10 +70,22 @@
     <main class="flex-grow container mx-auto px-4 py-8">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
-        <div class="mb-4">
+        <div class="mb-4 space-y-2">
             {% for message in messages %}
-            <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mb-2" role="alert">
+            <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 4000)"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 transform scale-90"
+                x-transition:enter-end="opacity-100 transform scale-100"
+                x-transition:leave="transition ease-in duration-300"
+                x-transition:leave-start="opacity-100 transform scale-100"
+                x-transition:leave-end="opacity-0 transform scale-90"
+                class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded shadow-sm relative"
+                role="alert">
                 <p>{{ message }}</p>
+                <button @click="show = false"
+                    class="absolute top-0 right-0 mt-4 mr-4 text-blue-500 hover:text-blue-700 cursor-pointer">
+                    <span class="text-xl">&times;</span>
+                </button>
             </div>
             {% endfor %}
         </div>
