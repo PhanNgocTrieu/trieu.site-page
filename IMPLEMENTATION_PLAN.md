@@ -1,6 +1,6 @@
 # Kế Hoạch Triển Khai Nâng Cấp Hệ Thống Website (Implementation Plan)
 
-Tài liệu này chi tiết hóa kế hoạch nâng cấp website `trieu.site-page` theo các mục tiêu: News Feed, Kinh Thánh App, Docs Management và tích hợp AI.
+tài liệu này chi tiết hóa kế hoạch nâng cấp website `trieu.site-page` theo các mục tiêu: News Feed, Kinh Thánh App, Docs Management và tích hợp AI.
 
 ---
 
@@ -50,8 +50,11 @@ Tài liệu này chi tiết hóa kế hoạch nâng cấp website `trieu.site-pa
 *   **2.2. User Profile**: Avatar upload, Bio, Danh sách bài đã đăng, Tài liệu đã đóng góp.
 *   **2.3. Rich Text Editor (Soạn thảo văn bản)**:
     *   Tích hợp Editor mạnh mẽ hơn (như Quill.js hoặc Editor.js) để hỗ trợ chèn ảnh, video, quote dễ dàng.
+    *   *(Phần này sẽ tích hợp kỹ hơn khi làm AI ở Phase 3)*
 
-**Status**: [ ] Not Started
+**Status**: [x] Completed
+- Login đã chuyển sang Email.
+- Profile Page đã hỗ trợ Upload Avatar và Update thông tin.
 
 ---
 
@@ -93,6 +96,6 @@ Tài liệu này chi tiết hóa kế hoạch nâng cấp website `trieu.site-pa
 
 ## 4. Lộ trình triển khai (Roadmap)
 1.  **Phase 1**: News Feed Homepage + Docs Library (Đã xong).
-2.  **Phase 2**: User Profile + Rich Editor.
+2.  **Phase 2**: User Profile + Rich Editor (Đã xong Core).
 3.  **Phase 3**: Tích hợp OpenAI để làm đẹp bài viết.
 4.  **Phase 4**: Bible App.

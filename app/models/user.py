@@ -12,6 +12,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(256))
     role = db.Column(db.String(20), default='user') # user, admin, instructor
     is_active = db.Column(db.Boolean, default=True)
+    avatar = db.Column(db.String(255))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def set_password(self, password):

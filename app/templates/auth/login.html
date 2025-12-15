@@ -10,11 +10,13 @@
             {{ form.hidden_tag() }}
             <div class="rounded-md shadow-sm -space-y-px">
                 <div class="mb-4">
-                    {{ form.username.label(class="block text-sm font-medium text-gray-700") }}
-                    {{ form.username(class="appearance-none rounded relative block w-full px-3 py-2 border
+                    <label class="block text-sm font-medium text-gray-700" for="username_or_email">Username or
+                        Email</label>
+                    <input class="appearance-none rounded relative block w-full px-3 py-2 border
                     border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500
-                    focus:border-indigo-500 focus:z-10 sm:text-sm") }}
-                    {% for error in form.username.errors %}
+                    focus:border-indigo-500 focus:z-10 sm:text-sm" id="username_or_email" name="username_or_email"
+                        required type="text" value="">
+                    {% for error in form.username_or_email.errors %}
                     <p class="text-red-500 text-xs italic">{{ error }}</p>
                     {% endfor %}
                 </div>
